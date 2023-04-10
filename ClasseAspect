@@ -1,0 +1,17 @@
+import org.aspectj.lang.annotation.*;
+
+@Aspect
+public class VerificacaoSaldoAspect {
+    @Pointcut("execution(* Conta.sacar(double)) && this(conta)")
+    public void sacar(Conta conta) {}
+
+    @Before("sacar(conta)")
+    public void verificarSaldo(Conta conta) {
+        double saldo = conta.getSaldo();
+        System.out.println("Verificando saldo da conta " + conta.getNumeroConta() +
+            " - Saldo disponível: R$" + saldo);
+           if (saldo < 0) {
+            System.out.println("Saldo insuficiente na conta " + conta.getNumeroConta());
+        }
+    }
+}
